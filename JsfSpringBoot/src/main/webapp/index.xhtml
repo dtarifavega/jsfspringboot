@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="content">
+
+		<!-- INTERFACE -->
+
+
+
+		<div id="mainContainer">
+			<h:form id="formtabla">
+				<h:panelGroup id="tabla">
+					<table width="100%" height="100%">
+						<tr>
+							<td align="center" colspan="2">
+								<div
+									style="border: 0; height: 70px; overflow: hidden; width: 248px;">CREACION
+									DE USUARIOS</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td><p:dataTable id="dataTable" widgetVar="dataTable"
+									var="usuarios" value="#{creacionUsuarios.lusuarios}">
+
+
+									<p:column headerText="email" width="25%"
+										style="text-align: center;" filterBy="#{usuarios.email}"
+										filterMatchMode="contains">
+										<h:outputText value="#{usuarios.email}" />
+									</p:column>
+
+									<p:column headerText="Nombre y apellidos" width="50%"
+										style="text-align: center;">
+										<h:outputText value="#{usuarios.nombreApellidos}" />
+									</p:column>
+
+									<p:column headerText="Fecha Nacimiento"
+										style="text-align: center;"
+										filterBy="#{usuarios.fechaNacimiento}"
+										filterMatchMode="contains"
+										filterFunction="#{dateRangeFilter.filterByDate}">
+										<f:facet name="filter">
+											<p:datePicker pattern="dd/MM/yyyy" selectionMode="range"
+												readonlyInput="false">
+												<p:ajax event="dateSelect" process="@this"
+													oncomplete="PF('dataTable').filter()"
+													listener="#{dateRangeFilter.filterByDate}" />
+											</p:datePicker>
+										</f:facet>
+										<h:outputText
+											value="#{creacionUsuarios.format(usuarios.fechaNacimiento)}" />
+									</p:column>
+
+
+
+
+								</p:dataTable></td>
+						</tr>
+					</table>
+					<p:blockUI block="dataTable" trigger="dataTable" />
+				</h:panelGroup>
+			</h:form>
+			<script>
+				PrimeFaces.widget.DatePicker.prototype.fireDateSelectEvent = function() {
+					// #5830: do not fire in range mode if only the first value is set
+					//<![CDATA[
+					if (this.cfg.selectionMode === "range"
+							&& this.input.val()
+									.indexOf(this.cfg.rangeSeparator) === -1) {
+						return;
+					}
+					this.callBehavior('dateSelect');
+					// ]]>
+
+				};
+			</script>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+<h:form id="form">
+	<table>
+		<tr>
+			<td align="center"><h:outputLabel value="Crear Usuarios" /></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td align="left" colspan="1"><h:outputLabel for="email"
+					value="Email:" /> <h:inputText styleClass="input__control"
+					id="email" value="#{creacionUsuarios.usuario.email}" required="true"
+					requiredMessage="email obligatorio"
+					validatorMessage="email no Valido">
+					<f:validateRegex
+						pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+				</h:inputText> <p:message for="email" /></td>
+		</tr>
+		<tr>
+			<td align="left" colspan="2"><h:outputLabel
+					for="nombreApellidos" value="Nombre y apellidos:" /> <h:inputText
+					styleClass="input__control" id="nombreApellidos"
+					value="#{creacionUsuarios.usuario.nombreApellidos}" required="true"
+					requiredMessage="nombre y apellidos obligatorio"
+					validatorMessage="debe contener caracteres correctos">
+					<f:validateRegex pattern="^[a-zA-Z\s]+{2,50}" />
+				</h:inputText> <p:message for="nombreApellidos" /></td>
+		</tr>
+
+		<tr>
+			<td colspan="2"><h:outputLabel value="Fecha de Nacimiento:" /></td>
+		</tr>
+		<tr>
+			<td align="left" colspan="2"><p:calendar required="true"
+					requiredMessage="fecha nacimiento obligatoria"
+					id="calFechaNacimiento" pattern="dd/MM/yyyy"
+					value="#{creacionUsuarios.usuario.fechaNacimiento}"
+					validator="#{creacionUsuarios.validate}"
+					validatorMessage="La edad del usuario debe ser mayor de 14 años"
+					navigator="true">
+
+				</p:calendar></td>
+			<tr>
+				<td><p:message for="calFechaNacimiento" /></td>
+			</tr>
+
+		</tr>
+
+		<tr>
+			<td colspan="2" align="center"><p:commandButton
+					id="btnConsultarSismos" ajax="false"
+					update="formtabla:tabla"
+					title="Haz clic para guardar un usuario"
+					alt="Haz clic para guardar un usuario" value="Guardar"
+					action="#{creacionUsuarios.guardarSession}" /></td>
+		</tr>
+	</table>
+</h:form>
+</html>
