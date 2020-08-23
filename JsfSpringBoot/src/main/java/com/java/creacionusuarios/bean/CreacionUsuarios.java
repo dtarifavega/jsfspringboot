@@ -22,8 +22,8 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.java.creacionusuarios.dto.Usuarios;
-
+import com.java.creacionusuarios.persistencia.Usuarios;
+import com.java.creacionusuarios.serviceRest.ServicesRestTemplate;
 
 
 
@@ -35,16 +35,31 @@ import com.java.creacionusuarios.dto.Usuarios;
 @Named(value = "creacionUsuarios")
 @SessionScoped
 public class CreacionUsuarios implements Serializable {
+	@Autowired
+	private ServicesRestTemplate servicerest;
 
-
-	private List<Usuarios> lusuarios = new ArrayList<>();
+	private List<Usuarios> lusuarios = null;
 
 	private Usuarios usuario = new Usuarios();
 
-	
+	 public void initialize() throws Exception  {
+		 //cargamos de primera de base de datos los usuarios
+		 if(lusuarios==null) {
+			 lusuarios=getUsuariosBD();
+		 }
+	 }
+
+
+	public ServicesRestTemplate getServicerest() {
+		return servicerest;
+	}
+
+	public void setServicerest(ServicesRestTemplate servicerest) {
+		this.servicerest = servicerest;
+	}
 
 	public void guardarSession() throws Exception {
-		lusuarios.add(usuario);  //guardado en session
+		servicerest.guardar(usuario); // debemos controlar los roles en index
 		usuario = new Usuarios();
 
 	}
@@ -73,7 +88,9 @@ public class CreacionUsuarios implements Serializable {
 
 	}
 	
-
+	public List<Usuarios> getUsuariosBD() throws Exception {
+		return servicerest.getUsuarios();
+	}
 
 	public List<Usuarios> getLusuarios() {
 		return lusuarios;
