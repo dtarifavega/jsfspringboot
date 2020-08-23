@@ -45,7 +45,7 @@ public class CreacionUsuarios implements Serializable {
 	 public void initialize() throws Exception  {
 		 //cargamos de primera de base de datos los usuarios
 		 if(lusuarios==null) {
-			 lusuarios=getUsuariosBD();
+			 lusuarios=new ArrayList();
 		 }
 	 }
 
@@ -60,6 +60,7 @@ public class CreacionUsuarios implements Serializable {
 
 	public void guardarSession() throws Exception {
 		servicerest.guardar(usuario); // debemos controlar los roles en index
+		lusuarios.add(usuario);
 		usuario = new Usuarios();
 
 	}
